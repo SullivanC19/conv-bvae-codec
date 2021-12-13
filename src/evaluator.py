@@ -137,17 +137,4 @@ def show_smile_translation(model, img_dir, num_samples=5, num_across=15):
     plt.imshow(utils.make_grid(interpolated, nrow=num_samples, ).permute(1, 2, 0))
     plt.show()
 
-if __name__ == '__main__':
-    # model = load_model(40, 1)
-
-    # compute_test_loss(model, DIR_DATA)
-    # compute_psnr(model, DIR_DATA)
-
-    # TODO: only do below for best model (as determined using the above metrics)
-
-    # show_side_to_side_comparison(model, DIR_DATA)
-    # show_smile_translation(model, DIR_DATA)
-    all_models = load_all_models()
-    plot_all_pca(all_models, DIR_DATA)
-
 

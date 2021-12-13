@@ -16,6 +16,8 @@ from model import ConvBetaVae
 IMAGE_SIZE = 64
 EPOCHS = 100
 BATCH_SIZE = 16
+DEFAULT_LATENT = 16
+DEFAULT_BETA = 1
 
 DIR_DATA = './res/data'
 DIR_MODEL = './models'
@@ -65,12 +67,12 @@ if __name__ == '__main__':
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hl:b:', ['help', 'latent=', 'beta='])
     except getopt.GetoptError as err:
-        # print help information and exit:
-        print(err)  # will print something like "option -a not recognized"
+        print(err)
         print('trainer.py -l <latent-variables> -b <beta-value>')
         sys.exit(2)
-    latent_variables = 32
-    beta_value = 1
+
+    latent_variables = DEFAULT_LATENT
+    beta_value = DEFAULT_BETA
     for o, a in opts:
         if o in ('-h', '--help'):
             print('trainer.py -l <latent-variables> -b <beta-value>')
@@ -98,7 +100,6 @@ if __name__ == '__main__':
         valid_loss, valid_rec, valid_kl = evaluate_model(model, valid)
 
         # Save Loss
-
         writer.add_scalar('Loss/train', train_loss, epoch)
         writer.add_scalar('Reconstruction Cost/train', train_rec, epoch)
         writer.add_scalar('KL Divergence/train', train_kl, epoch)
@@ -108,7 +109,6 @@ if __name__ == '__main__':
         writer.add_scalar('KL Divergence/valid', valid_kl, epoch)
 
         # Save Image(s)
-
         sampled_image = (model.decoder(model.sample_prior(1)) + 1) / 2
         writer.add_image('Sampled Image', torchvision.utils.make_grid(sampled_image, nrow=10), epoch)
 

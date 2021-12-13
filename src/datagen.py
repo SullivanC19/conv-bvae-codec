@@ -118,7 +118,6 @@ def generate_images():
 
 def check_images(num_images=8200):
     quit = False
-    # i = 0
     while True:
         i = random.randint(0, num_images - 1)
 
@@ -152,10 +151,4 @@ def check_images(num_images=8200):
             break
 
         i += 1
-
-if __name__ == '__main__':
-    check_images()
-    # generate_images()
-    # sample_animation()
-    # compare_encoded_decoded()
 
