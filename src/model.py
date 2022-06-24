@@ -10,7 +10,7 @@ class Encoder(nn.Module):
     def __init__(self, img_shape=(3, 64, 64), latent_variables=32, ch1=32, ch2=64, fc=256, kernel_size=4):
         super(Encoder, self).__init__()
 
-        # kernel size must be even so we can half input size each layer
+        # kernel size must be even so that we halve the input size each layer
         assert kernel_size % 2 == 0
 
         self.latent_variables = latent_variables
@@ -48,7 +48,7 @@ class Decoder(nn.Module):
     def __init__(self, img_shape=(3, 64, 64), latent_variables=32, ch1=32, ch2=64, fc=256, kernel_size=4):
         super(Decoder, self).__init__()
 
-        # kernel size must be even so we can half input size each layer
+        # kernel size must be even so that we halve the input size each layer
         assert kernel_size % 2 == 0
 
         stride = 2

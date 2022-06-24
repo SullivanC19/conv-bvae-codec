@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 
-import sys
-import getopt
 from numpy.lib.function_base import interp
 
-from sklearn import svm
 import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import torch
-from torchvision import datasets, transforms, utils
+from torchvision import utils
 
-from trainer import load_image_data, evaluate_model, DIR_DATA, DIR_MODEL
+from datagen import load_image_data
+from trainer import evaluate_model, DIR_MODEL
 
 def load_model(latent_variables=32, beta_value=1):
     model_str = f'ConvBetaVae_{latent_variables}_{beta_value}'
@@ -72,7 +70,7 @@ def plot_all_pca(models, img_dir):
             _A.append(torch.zeros((len(test), models[i][j].latent_variables)))
         A.append(_A)
 
-    figure, axis = plt.subplots(len(models), len(models[0]))
+    _, axis = plt.subplots(len(models), len(models[0]))
     for k, (data, _) in enumerate(tqdm(test)):
         for i in range(len(models)):
             for j in range(len(models[0])):

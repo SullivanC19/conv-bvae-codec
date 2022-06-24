@@ -6,11 +6,10 @@ import getopt
 from tqdm import tqdm
 import torch
 import torchvision.utils
-from torchvision import datasets, transforms
 from torch.utils.tensorboard import SummaryWriter
-from torch.utils.data import random_split
 
 from model import ConvBetaVae
+from datagen import DIR_DATA, load_image_data
 
 
 IMAGE_SIZE = 64
@@ -19,28 +18,10 @@ BATCH_SIZE = 16
 DEFAULT_LATENT = 16
 DEFAULT_BETA = 1
 
-DIR_DATA = './res/data'
 DIR_MODEL = './models'
 
-def load_image_data(img_dir, batch_size=BATCH_SIZE):
-    transform = transforms.Compose([
-        transforms.Resize(IMAGE_SIZE),
-        transforms.ToTensor(),
-        transforms.Normalize(0.5, 0.5)
-    ])
-
-    dataset = datasets.ImageFolder(
-        root=img_dir,
-        transform=transform
-    )
-
-    test_dataset, train_dataset, valid_dataset = random_split(dataset, [2000, 6000, len(dataset) - 8000], generator=torch.Generator().manual_seed(42))
-
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True)
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=batch_size, shuffle=True)
-
-    return test_loader, train_loader, valid_loader
+def train_model(model, data_loader, optimizer):
+    return evaluate_model(optimizer=optimizer)
 
 def evaluate_model(model, data_loader, optimizer=None):
     tot_loss = 0
@@ -89,7 +70,7 @@ if __name__ == '__main__':
         model = model.cuda()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    test, train, valid = load_image_data(DIR_DATA)
+    test, train, valid = load_image_data(DIR_DATA, batch_size=BATCH_SIZE, input_img_size=IMAGE_SIZE)
 
     model_str = f'ConvBetaVae_{latent_variables}_{beta_value}'
     writer = SummaryWriter(f'./runs/{model_str}/')
