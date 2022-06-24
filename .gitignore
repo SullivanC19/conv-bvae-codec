@@ -1,4 +1,9 @@
-res/
-runs/
-models/
-docs/
+res/data/colin_faces/*
+res/data/smiling_colin_faces/*
+res/CS 236 Video Data.mov
+runs/*
+models/*
+docs/*
+!docs/Project Proposal.pdf
+!docs/Progress Report.pdf
+!docs/Final Project Poster Presentation.pdf
